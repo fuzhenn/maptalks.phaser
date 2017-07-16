@@ -26,15 +26,27 @@
                 center: [109.20749554050774, 34.36776742218806],//[109.20749554050774, 34.36776742218806], //[175.27, -37.79],
                 zoom: 3
             });
-          
-          var phaserLayer = new maptalks.PhaserLayer('phaserLayer');
+          var coord = map.getCenter();
+          var phaserLayer = new maptalks.PhaserLayer('phaserLayer', {
+            forceRenderOnMoving : true
+          });
+          var s;
+          phaserLayer.draw = phaserLayer.drawOnInteracting = function (game) {
+            if (!s) {
+              return;
+            }
+            var p = phaserLayer.coordinateToPoint(coord);
+            s.position.x = p[0];
+            s.position.y = p[1];
+          };
           phaserLayer
           .on('phaser.preload',function(e){
               e.game.load.image('phaserPicture','test.png');
           })
           .on('phaser.create',function(e){
                 var point =phaserLayer.coordinateToPoint(map.getCenter());
-                var s = e.game.add.sprite(point[0], point[1], 'phaserPicture');
+                s = e.game.add.sprite(point[0], point[1], 'phaserPicture');
+                // var s = e.game.add.sprite(80, 0, 'phaserPicture');
                 s.rotation = 0.14;
           })
           .addTo(map);

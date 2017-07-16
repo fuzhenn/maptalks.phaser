@@ -72,6 +72,7 @@ class PhaserRenderer extends maptalks.renderer.CanvasLayerRenderer {
 
     _onGameCreate(e) {
         this.canvas = e.canvas;
+        this.setCanvasUpdated();
         this.layer.fire('phaser.create',{game:e});
     }
 

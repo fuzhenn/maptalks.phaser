@@ -100,6 +100,7 @@ var PhaserRenderer = function (_maptalks$renderer$Ca) {
 
     PhaserRenderer.prototype._onGameCreate = function _onGameCreate(e) {
         this.canvas = e.canvas;
+        this.setCanvasUpdated();
         this.layer.fire('phaser.create', { game: e });
     };
 
