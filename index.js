@@ -1,16 +1,16 @@
 ﻿import * as maptalks from 'maptalks';
 import * as Phaser from 'phaser-ce';
 
-const options={
+const options = {
     antialias:true,
     multiTexture:true
-}
+};
 
 export class PhaserLayer extends maptalks.CanvasLayer {
-    coordinateToPoint(coord){
-      let map = this.getMap();
-      if (!map) return null;
-      return map.coordinateToContainerPoint(coord).toArray();
+    coordinateToPoint(coord) {
+        let map = this.getMap();
+        if (!map) return null;
+        return map.coordinateToContainerPoint(coord).toArray();
     }
 }
 
@@ -19,7 +19,7 @@ PhaserLayer.mergeOptions(options);
 class PhaserRenderer extends maptalks.renderer.CanvasLayerRenderer {
 
     draw() {
-        super.draw();       
+        super.draw();
     }
 
     drawOnInteracting() {
@@ -56,32 +56,36 @@ class PhaserRenderer extends maptalks.renderer.CanvasLayerRenderer {
         //     this.layer.fire('phaser.create',{game:e});
         // }
         this._container = maptalks.DomUtil.createEl('div');
-        // options.parent = this._container;
+        //let options.parent = this._container;
         this.game = new Phaser.Game(
-            size.width, size.height, Phaser.CANVAS, 
-            this._container, 
-            { preload: this._onGamePreload.bind(this), create:  this._onGameCreate.bind(this) }
+            size.width, size.height, Phaser.CANVAS,
+            this._container,
+            {
+                preload: this._onGamePreload.bind(this),
+                create: this._onGameCreate.bind(this),
+                update: this._onGameCreate.bind(this)
+            }
         );
         this.canvas = this.game.canvas;
     }
 
     _onGamePreload(e) {
-        this.layer.fire('phaser.preload',{game:e});
-        
+        this.layer.fire('phaser.preload', { game:e });
+
     }
 
     _onGameCreate(e) {
         this.canvas = e.canvas;
         this.setCanvasUpdated();
-        this.layer.fire('phaser.create',{game:e});
+        this.layer.fire('phaser.create', { game:e });
     }
 
-    _onGameUpdate() {
+    _onGameUpdate(e) {
         this.setCanvasUpdated();
-        this.layer.fire('phaser.update',{game:e});        
+        this.layer.fire('phaser.update', { game:e });
     }
 
-    resizeCanvas(canvasSize) {
+    resizeCanvas() {
         if (!this.canvas) {
             return;
         }
