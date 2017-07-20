@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -10,7 +10,6 @@
     <style type="text/css">
         html, body {
             margin: 0px;
-            background-color: black;
             height: 100%;
             width: 100%;
         }
@@ -21,16 +20,30 @@
         }
     </style>
     <script type="text/javascript">
-       window.onload=function(){
+        window.onload = function () {
            var map = new maptalks.Map("map", {
-                center: [109.20749554050774, 34.36776742218806],//[109.20749554050774, 34.36776742218806], //[175.27, -37.79],
-                zoom: 3
+               center: [113.96848789725455, 30.93037338344148],
+               zoom: 12,
+               zoomBackground: false,
+               view: {
+                   projection: 'EPSG:4326'
+               }
+               /*,
+               baseLayer: new maptalks.TileLayer('base', {
+                   baseLayerRenderer: 'dom',
+                   tileSystem: [1, -1, -180, 90],
+                   urlTemplate: 'http://192.168.100.96:9010/XG_VEC/DataServer?T=tile&x={x}&y={y}&l={z}'
+               })*/
             });
           var coord = map.getCenter();
           var phaserLayer = new maptalks.PhaserLayer('phaserLayer', {
             forceRenderOnMoving : true
           });
           var s;
+          var back;
+          var mummy;
+          var anim;
+          var loopText;
           phaserLayer.draw = phaserLayer.drawOnInteracting = function (game) {
             if (!s) {
               return;
@@ -40,18 +53,47 @@
             s.position.y = p[1];
           };
           phaserLayer
-          .on('phaser.preload',function(e){
-              e.game.load.image('phaserPicture','test.png');
+          .on('phaser.preload', function (e) {
+              e.game.load.image('lazur', 'thorn_lazur.png');
+              e.game.load.spritesheet('mummy', 'metalslug_mummy37x45.png', 37, 45, 18);
           })
-          .on('phaser.create',function(e){
-                var point =phaserLayer.coordinateToPoint(map.getCenter());
-                s = e.game.add.sprite(point[0], point[1], 'phaserPicture');
-                // var s = e.game.add.sprite(80, 0, 'phaserPicture');
-                s.rotation = 0.14;
+          .on('phaser.update', function (e) {
+              if (anim.isPlaying) {
+                  back.x -= 1;
+              }
           })
-          .addTo(map);
-       }
+          .on('phaser.create', function (e) {
+              back = e.game.add.image(0, -400, 'lazur');
+              back.scale.set(2);
+              back.smoothed = false;
 
+              mummy = e.game.add.sprite(200, 360, 'mummy', 5);
+              mummy.scale.set(4);
+              mummy.smoothed = false;
+              anim = mummy.animations.add('walk');
+
+              anim.onStart.add(function(sprite, animation) {
+
+                  e.game.add.text(32, 32, 'Animation started', { fill: 'white' });
+
+              }, this);
+              anim.onLoop.add(function(sprite, animation) {
+
+                  if (animation.loopCount === 1) {
+                      loopText = e.game.add.text(32, 64, 'Animation looped', { fill: 'white' });
+                  }
+                  else {
+                      loopText.text = 'Animation looped x2';
+                      animation.loop = false;
+                  }
+              }, this);
+              anim.onComplete.add(function (sprite, animation) {
+                  e.game.add.text(32, 64 + 32, 'Animation stopped', { fill: 'white' });
+              }, this);
+
+              anim.play(10, true);
+          }).addTo(map);
+       }
     </script>
 </head>
 <body>
