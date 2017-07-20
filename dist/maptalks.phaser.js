@@ -92,8 +92,8 @@ var PhaserRenderer = function (_maptalks$renderer$Ca) {
         //let options.parent = this._container;
         this.game = new Phaser.Game(size.width, size.height, Phaser.CANVAS, this._container, {
             preload: this._onGamePreload.bind(this),
-            create: this._onGameCreate.bind(this),
-            update: this._onGameCreate.bind(this)
+            create: this._onGameCreate.bind(this)
+            //update: this._onGameCreate.bind(this)
         });
         this.canvas = this.game.canvas;
     };

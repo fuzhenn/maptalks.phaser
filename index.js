@@ -62,8 +62,8 @@ class PhaserRenderer extends maptalks.renderer.CanvasLayerRenderer {
             this._container,
             {
                 preload: this._onGamePreload.bind(this),
-                create: this._onGameCreate.bind(this),
-                update: this._onGameCreate.bind(this)
+                create: this._onGameCreate.bind(this)
+                //update: this._onGameCreate.bind(this)
             }
         );
         this.canvas = this.game.canvas;
