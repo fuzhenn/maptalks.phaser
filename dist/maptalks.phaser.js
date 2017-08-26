@@ -89,8 +89,11 @@ var PhaserRenderer = function (_maptalks$renderer$Ca) {
         //     this.layer.fire('phaser.create',{game:e});
         // }
         this._container = maptalks.DomUtil.createEl('div');
-        // options.parent = this._container;
-        this.game = new Phaser.Game(size.width, size.height, Phaser.CANVAS, this._container, { preload: this._onGamePreload.bind(this), create: this._onGameCreate.bind(this) });
+        this.game = new Phaser.Game(size.width, size.height, Phaser.CANVAS, this._container, {
+            preload: this._onGamePreload.bind(this),
+            create: this._onGameCreate.bind(this),
+            update: this._onGameUpdate.bind(this)
+        });
         this.canvas = this.game.canvas;
     };
 
@@ -104,12 +107,12 @@ var PhaserRenderer = function (_maptalks$renderer$Ca) {
         this.layer.fire('phaser.create', { game: e });
     };
 
-    PhaserRenderer.prototype._onGameUpdate = function _onGameUpdate() {
+    PhaserRenderer.prototype._onGameUpdate = function _onGameUpdate(e) {
         this.setCanvasUpdated();
         this.layer.fire('phaser.update', { game: e });
     };
 
-    PhaserRenderer.prototype.resizeCanvas = function resizeCanvas(canvasSize) {
+    PhaserRenderer.prototype.resizeCanvas = function resizeCanvas() {
         if (!this.canvas) {
             return;
         }

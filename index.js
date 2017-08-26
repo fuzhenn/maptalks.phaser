@@ -56,18 +56,20 @@ class PhaserRenderer extends maptalks.renderer.CanvasLayerRenderer {
         //     this.layer.fire('phaser.create',{game:e});
         // }
         this._container = maptalks.DomUtil.createEl('div');
-        // options.parent = this._container;
         this.game = new Phaser.Game(
             size.width, size.height, Phaser.AUTO,
             this._container,
-            { preload: this._onGamePreload.bind(this), create:  this._onGameCreate.bind(this) }
+            {
+                preload: this._onGamePreload.bind(this),
+                create: this._onGameCreate.bind(this),
+                update: this._onGameUpdate.bind(this)
+            }
         );
         this.canvas = this.game.canvas;
     }
 
     _onGamePreload(e) {
         this.layer.fire('phaser.preload', { game:e });
-
     }
 
     _onGameCreate(e) {

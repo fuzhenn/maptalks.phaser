@@ -10,7 +10,7 @@
   "main": "dist/maptalks.phaser.js",
   "module": "index.js",
   "scripts": {
-    "lint": "eslint index.js test/**/*.js",
+    "lint": "eslint index.js test/**/*.js --fix",
     "test": "gulp test",
     "pretest": "npm run lint",
     "prepublish": "npm run lint && gulp minify"
@@ -38,7 +38,8 @@
     "maptalks-build-helpers": "^0.1.0",
     "minimist": "^1.2.0",
     "mocha": "^2.4.5",
-    "phaser-ce": "2.8.2"
+    "phaser-ce": "2.8.2",
+    "rollup-plugin-babel": "^2.7.1"
   },
   "peerDependencies": {
     "maptalks": "<2.0.0"
